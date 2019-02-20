@@ -1,0 +1,39 @@
+#pragma once
+
+#include "Token.h"
+
+
+enum MachineState {
+	//MORE STATES HERE???
+	START_STATE, IDENTIFIER_STATE, INTEGER_STATE, CANTMOVE_STATE, INSERTION_STATE,
+	EOF_STATE, PLUS_STATE, MINUS_STATE, TIMES_STATE, DIVIDE_STATE,
+	ISEQUAL_STATE, LESS_STATE, GREATER_STATE, LESSEQ_STATE, GREATEREQ_STATE,
+	ASSIGNMENT_STATE, LINECOMMENT_STATE, BLOCKCOMMENT_STATE, LEFTCURLY_STATE, HALFWAY_STATE,
+	RIGHTCURLY_STATE, LEFTPAREN_STATE, RIGHTPAREN_STATE, SEMICOLON_STATE, BAD_STATE, LAST_STATE
+};
+
+enum CharacterType {
+	//MORE STATES HERE???
+	LETTER_CHAR, DIGIT_CHAR, WHITESPACE_CHAR,
+	PLUS_CHAR, BAD_CHAR, LESS_CHAR, GREATER_CHAR, 
+	LEFTBR_CHAR, RIGHTBR_CHAR, MINUS_CHAR,
+	LEFTPAREN_CHAR, RIGHTPAREN_CHAR, ASSIGNMENT_CHAR, TIMES_CHAR,
+	DIVIDE_CHAR, NOT_CHAR, SEMICOLON_CHAR, NEWLINE_CHAR,
+	EOF_CHAR, LEFTCURLY_CHAR, RIGHTCURLY_CHAR, LAST_CHAR
+};
+
+class StateMachineClass {
+public:
+	StateMachineClass();
+	MachineState UpdateState(char currentCharacter, TokenType & correspondingTokenType);
+
+private:
+	MachineState mCurrentState;
+
+	//The matrix of legal moves:
+	MachineState mLegalMoves[LAST_STATE][LAST_CHAR];
+
+	//Which end-machine-states correspond to which token types.
+	//(non end states correspond to the BAD_TOKEN token type)
+	TokenType mCorrespondingTokenTypes[LAST_STATE];
+};

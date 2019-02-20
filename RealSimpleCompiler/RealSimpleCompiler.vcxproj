@@ -123,6 +123,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <LinkStatus>true</LinkStatus>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,6 +144,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="Symbol.cpp" />
+    <ClCompile Include="Token.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="Symbol.h" />
+    <ClInclude Include="Token.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="code.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
