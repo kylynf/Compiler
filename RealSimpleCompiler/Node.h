@@ -7,6 +7,37 @@ using namespace std;
 #include <string>
 #include <fstream>
 
+#include "Symbol.h"
+
+//sum1, sum2, sum3 for testing 
+class Node;
+class StartNode;
+class ProgramNode;
+class BlockNode;
+class StatementGroupNode;
+class StatementNode;
+class DeclarationStatementNode;
+class AssignmentStatementNode;
+class CoutStatementNode;
+class ExpressionNode;
+class IntergerNode;
+class IdentifiderNode;
+class BinaryOperatorNode;
+class PlusNode;
+
+class MinusNode;
+class TimesNode;
+class DivideNode;
+
+//1 true or 0 false
+class LessNode;
+class LessEqualNode;
+class GreaterNode;
+class GreaterEqualNode;
+class EqualNode;
+class NotEqualNode;
+
+
 class Node {
 public:
 	virtual ~Node();
@@ -21,7 +52,6 @@ private:
 	ProgramNode* mProgramNode;
 };
 
-//CHECK ME
 class ProgramNode : public Node {
 public:
 	ProgramNode(BlockNode* blockNode);
@@ -32,7 +62,9 @@ private:
 
 };
 
+//check me
 class BlockNode : public StatementGroupNode {
+public:
 	BlockNode();
 };
 
@@ -53,7 +85,7 @@ public:
 
 class DeclarationStatementNode : public StatementNode {
 public:
-	DeclarationStatementNode(IdentiferNode* identifierNode);
+	DeclarationStatementNode(IdentifierNode* identifierNode);
 	~DeclarationStatementNode();
 
 private:
@@ -68,4 +100,121 @@ private:
 	IdentifierNode* mIdentifierNode;
 	ExpressionNode* mExpressionNode;
 
+};
+
+class CoutStatementNode : public StatementNode {
+public:
+	CoutStatementNode(ExpressionNode* expressionNode);
+	//do I need a destructor??
+	~CoutStatementNode();
+private: 
+	//should this be assigned anywhere??
+	ExpressionNode* mExpressionNode;
+};
+
+class ExpressionNode {
+public:
+	virtual int Evaluate() = 0;
+	virtual ~ExpressionNode() {};
+};
+
+class IntegerNode : public ExpressionNode {
+public:
+	IntegerNode(int number);
+	virtual int Evaluate();
+	//are we supposed to have an expression node destructor here??
+private:
+	int mNumber;
+};
+
+class IdentifierNode : public ExpressionNode {
+public: 
+	IdentifierNode(std::string label, SymbolTableClass* symbolTableClass);
+	void DeclareVariable();
+	void SetValue(int v);
+	int GetIndex();
+	virtual int Evaluate();
+	//are we supposed to have an expression node destructor here??
+private:
+	SymbolTableClass* mSymbolTable;
+	std::string mLabel;
+};
+
+class BinaryOperatorNode : public ExpressionNode {
+public:
+	BinaryOperatorNode(ExpressionNode* left, ExpressionNode* right);
+	~BinaryOperatorNode();
+protected:
+	ExpressionNode* mExpressionNodeOne;
+	ExpressionNode* mExpressionNodeTwo;
+};
+
+class PlusNode : public BinaryOperatorNode {
+public:
+	PlusNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class MinusNode : public BinaryOperatorNode {
+public:
+	MinusNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class TimesNode : public BinaryOperatorNode {
+public:
+	TimesNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class DivideNode : public BinaryOperatorNode {
+public:
+	DivideNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class LessNode : public BinaryOperatorNode {
+public:
+	LessNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class GreaterNode : public BinaryOperatorNode {
+public:
+	GreaterNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class LessEqualNode : public BinaryOperatorNode {
+public:
+	LessEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class GreaterEqualNode : public BinaryOperatorNode {
+public:
+	GreaterEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class EqualNode : public BinaryOperatorNode {
+public:
+	EqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
+};
+
+class NotEqualNode : public BinaryOperatorNode {
+public:
+	NotEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	virtual int Evaluate();
 };
