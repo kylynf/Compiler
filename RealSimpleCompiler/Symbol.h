@@ -5,12 +5,13 @@
 using namespace std;
 
 class SymbolTableClass {
+
+public:
 	struct Variable {
 		string mLabel;
 		int mValue;
 	};
 
-public:
 	bool Exists(const std::string & s);
 	
 	void AddEntry(const std::string & s);

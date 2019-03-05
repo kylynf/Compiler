@@ -6,10 +6,12 @@ Node::~Node() {
 
 StartNode::StartNode(ProgramNode* programNode) {
 	mProgramNode = programNode;
+	MSG("Hello");
 }
 
 StartNode::~StartNode() {
 	delete mProgramNode;
+	MSG("Start node destructor deleted program node");
 }
 
 ProgramNode::ProgramNode(BlockNode* blockNode) {
@@ -18,9 +20,15 @@ ProgramNode::ProgramNode(BlockNode* blockNode) {
 
 ProgramNode::~ProgramNode(){
 	delete mBlockNode;
+	MSG("Program node destructor deleted Block Node");
 }
 
-BlockNode::BlockNode() {
+BlockNode::BlockNode(StatementGroupNode* statementGroupNode) {
+	mStatementGroupNode = statementGroupNode;
+}
+
+BlockNode::~BlockNode() {
+	delete mStatementGroupNode;
 }
 
 StatementGroupNode::StatementGroupNode() {
@@ -31,9 +39,10 @@ void StatementGroupNode::AddStatement(StatementNode* statementNode){
 }
 
 StatementGroupNode::~StatementGroupNode() {
-	for (int i = 0; i < StatementNodeVector.size(); i++) {
+	for (size_t i = 0; i < StatementNodeVector.size(); i++) {
 		delete StatementNodeVector[i];
 	}
+	MSG("Group node destructor cleared vector");
 	//vector is automatically deleted
 }
 
@@ -57,6 +66,7 @@ AssignmentStatementNode::AssignmentStatementNode(IdentifierNode* identifierNode,
 AssignmentStatementNode::~AssignmentStatementNode() {
 	delete mIdentifierNode;
 	delete mExpressionNode;
+	MSG("Assignment statement node destructor deleted identifier node and expression node");
 }
 
 CoutStatementNode::CoutStatementNode(ExpressionNode* expressionNode) {

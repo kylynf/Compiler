@@ -1,11 +1,11 @@
 #pragma once
 
-using namespace std;
-#include <cstdlib>
-#include <vector>
-#include <iostream>
-#include <string>
-#include <fstream>
+//using namespace std;
+//#include <cstdlib>
+//#include <vector>
+//#include <iostream>
+//#include <string>
+//#include <fstream>
 
 #include "Symbol.h"
 
@@ -20,8 +20,8 @@ class DeclarationStatementNode;
 class AssignmentStatementNode;
 class CoutStatementNode;
 class ExpressionNode;
-class IntergerNode;
-class IdentifiderNode;
+class IntegerNode;
+class IdentifierNode;
 class BinaryOperatorNode;
 class PlusNode;
 
@@ -62,10 +62,13 @@ private:
 
 };
 
-//check me
-class BlockNode : public StatementGroupNode {
+class BlockNode : public Node {
 public:
-	BlockNode();
+	BlockNode(StatementGroupNode* statementGroupNode);
+	~BlockNode();
+
+private:
+	StatementGroupNode* mStatementGroupNode;
 };
 
 class StatementGroupNode : public Node {
@@ -78,6 +81,7 @@ private:
 	std::vector<StatementNode *> StatementNodeVector;
 };
 
+//CHECKME
 class StatementNode : public Node {
 public:
 	StatementNode();
@@ -89,7 +93,7 @@ public:
 	~DeclarationStatementNode();
 
 private:
-	IdentifierNode* mIdentifierNode;
+	IdentifierNode * mIdentifierNode;
 };
 
 class AssignmentStatementNode : public StatementNode {

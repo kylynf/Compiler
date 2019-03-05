@@ -1,7 +1,7 @@
 #pragma once
 
 //if code isnt working set ShowMessages to 1 and see exactly the order in which code is being executed
-#define ShowMessages 0 //0 or 1
+#define ShowMessages 1 //0 or 1
 
 
 #if ShowMessages
