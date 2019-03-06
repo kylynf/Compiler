@@ -1,11 +1,3 @@
-void main()
-{
-/*this
-is 
-testing 123
-*/
-int sum;
-//also hi 989
-sum = 35 + 400;
-cout << sum;
+void main() {
+	int sum;
 }

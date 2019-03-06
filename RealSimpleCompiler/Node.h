@@ -62,7 +62,11 @@ private:
 
 };
 
-class BlockNode : public Node {
+class StatementNode : public Node {
+};
+
+//redo the block node class so it derives from statement node instead of node
+class BlockNode : public StatementNode {
 public:
 	BlockNode(StatementGroupNode* statementGroupNode);
 	~BlockNode();
@@ -81,9 +85,6 @@ private:
 	std::vector<StatementNode *> StatementNodeVector;
 };
 
-
-class StatementNode : public Node {
-};
 
 class DeclarationStatementNode : public StatementNode {
 public:
