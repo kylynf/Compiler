@@ -11,6 +11,7 @@ public:
 	~ScannerClass(void);
 
 	TokenClass GetNextToken();
+	TokenClass PeekNextToken();
 	int GetLineNumber();
 
 private:

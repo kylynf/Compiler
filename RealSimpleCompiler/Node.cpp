@@ -6,7 +6,6 @@ Node::~Node() {
 
 StartNode::StartNode(ProgramNode* programNode) {
 	mProgramNode = programNode;
-	MSG("Hello");
 }
 
 StartNode::~StartNode() {
@@ -29,6 +28,7 @@ BlockNode::BlockNode(StatementGroupNode* statementGroupNode) {
 
 BlockNode::~BlockNode() {
 	delete mStatementGroupNode;
+	MSG("DELETE STATEMENT GROUP NODE");
 }
 
 StatementGroupNode::StatementGroupNode() {
@@ -44,10 +44,6 @@ StatementGroupNode::~StatementGroupNode() {
 	}
 	MSG("Group node destructor cleared vector");
 	//vector is automatically deleted
-}
-
-StatementNode::StatementNode() {
-	//this allows only classes that derive from Statement node to be stored in StatementNodeVector
 }
 
 DeclarationStatementNode::DeclarationStatementNode(IdentifierNode* identifierNode) {
@@ -75,6 +71,7 @@ CoutStatementNode::CoutStatementNode(ExpressionNode* expressionNode) {
 
 CoutStatementNode::~CoutStatementNode() {
 	delete mExpressionNode;
+	MSG("Cout statement deleted expression node");
 }
 
 IntegerNode::IntegerNode(int number) {
@@ -114,6 +111,8 @@ BinaryOperatorNode::BinaryOperatorNode(ExpressionNode* expressionNode1, Expressi
 BinaryOperatorNode::~BinaryOperatorNode() {
 	delete mExpressionNodeOne;
 	delete mExpressionNodeTwo;
+	MSG("binary operator node deleted expression node one");
+	MSG("binary operator node delete expression node two");
 }
 
 

@@ -81,10 +81,8 @@ private:
 	std::vector<StatementNode *> StatementNodeVector;
 };
 
-//CHECKME
+
 class StatementNode : public Node {
-public:
-	StatementNode();
 };
 
 class DeclarationStatementNode : public StatementNode {
@@ -112,7 +110,6 @@ public:
 	//do I need a destructor??
 	~CoutStatementNode();
 private: 
-	//should this be assigned anywhere??
 	ExpressionNode* mExpressionNode;
 };
 

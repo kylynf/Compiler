@@ -55,3 +55,28 @@ TokenClass ScannerClass::GetNextToken() {
 		T.CheckReserved();
 		return T;
 }
+
+TokenClass ScannerClass::PeekNextToken() {
+	long long fileoffset;
+
+	int line;
+
+	fileoffset = mFin.tellg();
+	line = GetLineNumber();
+
+	TokenClass tc = GetNextToken();
+
+	if (!mFin) {
+		mFin.clear();
+	}
+
+	//reset the get position of mFin and the current line number to where they were
+
+	mFin.seekg(fileoffset);
+	mLineNumber = line;
+
+	return tc;
+	//what should this return?
+		
+	
+}
