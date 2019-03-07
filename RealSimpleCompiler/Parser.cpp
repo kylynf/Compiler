@@ -13,9 +13,11 @@ void ParserClass::Start() {
 void ParserClass::Match(TokenType TT) {
 	TokenClass t = mScanner->GetNextToken();
 	if (t.GetTokenType() != TT) {
-		cerr << "Sorry your token types dont match";
+		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You were supposed to get " << t.GetTokenTypeName();
 		exit(1);
 	}
+	cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
+	cout << "Lexeme" << t.GetLexeme() << endl;
 	return;
 }
 
@@ -75,6 +77,7 @@ void ParserClass::AssignmentStatement() {
 
 void ParserClass::CoutStatement() {
 	Match(COUT_TOKEN);
+	Match(INSERTION_TOKEN);
 	Expression();
 	Match(SEMICOLON_TOKEN);
 }
@@ -104,7 +107,7 @@ void ParserClass::Relational() {
 		Match(T.GetTokenType());
 		PlusMinus();
 	}
-	else if (T.GetTokenType() == ISEQUAL_TOKEN) {
+	else if (T.GetTokenType() == ASSIGNMENT_TOKEN) {
 		Match(T.GetTokenType());
 		PlusMinus();
 	}
@@ -161,12 +164,10 @@ void ParserClass::Factor() {
 	TokenClass T = mScanner->PeekNextToken();
 
 	if (T.GetTokenType() == IDENTIFIER_TOKEN) {
-		Match(T.GetTokenType());
 		Identifier();
 
 	}
 	else if (T.GetTokenType() == INTEGER_TOKEN) {
-		Match(T.GetTokenType());
 		Integer();
 	}
 	else if (T.GetTokenType() == LPAREN_TOKEN) {
@@ -183,11 +184,9 @@ void ParserClass::Factor() {
 }
 
 void ParserClass::Identifier() {
-	TokenClass T = mScanner->PeekNextToken();
-	Match(T.GetTokenType());
+	Match(IDENTIFIER_TOKEN);
 }
 
 void ParserClass::Integer() {
-	TokenClass T = mScanner->PeekNextToken();
-	Match(T.GetTokenType());
+	Match(INTEGER_TOKEN);
 }

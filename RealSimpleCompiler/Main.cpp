@@ -40,6 +40,7 @@ int main() {
 	ParserClass parser(&scanner, &symbol);
 
 	parser.Start();
+
 	
 	return 0;
 
