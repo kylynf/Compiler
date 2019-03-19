@@ -39,7 +39,9 @@ int main() {
 
 	ParserClass parser(&scanner, &symbol);
 
-	parser.Start();
+	StartNode * starting = parser.Start();
+
+	delete starting;
 
 	
 	return 0;

@@ -45,7 +45,7 @@ int SymbolTableClass::GetValue(const std::string & s) {
 		cerr <<  s << " does not exist in the symbol table. Now quitting.";
 		exit(1);
 	}
-	
+	return 0;
 }
 
 void SymbolTableClass::SetValue(const std::string & s, int v) {
