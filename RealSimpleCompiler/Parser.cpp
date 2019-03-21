@@ -129,7 +129,7 @@ ExpressionNode * ParserClass::Relational() {
 		Match(T.GetTokenType());
 		current = new GreaterEqualNode(current, PlusMinus());
 	}
-	else if (T.GetTokenType() == ASSIGNMENT_TOKEN) {
+	else if (T.GetTokenType() == ISEQUAL_TOKEN) {
 		Match(T.GetTokenType());
 		current = new EqualNode(current, PlusMinus());
 	}
@@ -154,9 +154,7 @@ ExpressionNode * ParserClass::PlusMinus() {
 			Match(T.GetTokenType());
 			current = new MinusNode(current, TimesDivide());
 		}
-		else {
-			return current;
-		}
+		return current;
 	}
 }
 
