@@ -19,7 +19,7 @@ TokenClass ParserClass::Match(TokenType TT) {
 		exit(1);
 	}
 	cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
-	cout << "Lexeme" << t.GetLexeme() << endl;
+	cout << "Lexeme " << t.GetLexeme() << endl;
 	return t;
 }
 
@@ -70,6 +70,19 @@ StatementNode * ParserClass::Statement() {
 		CoutStatementNode * csn = CoutStatement();
 		return csn;
 	}
+	else if (TT == LCURLY_TOKEN) {
+		//BLOCK
+		BlockNode * block = Block();
+		return block;
+	}
+	else if (TT == IFSTATEMENT_TOKEN) {
+		IfStatementNode * myif = IfStatement();
+		return myif;
+	}
+	else if (TT == WHILESTATEMENT_TOKEN) {
+		WhileStatementNode * mywhile = WhileStatement();
+		return mywhile;
+	}
 	else {
 		return NULL;
 	}
@@ -101,6 +114,26 @@ CoutStatementNode * ParserClass::CoutStatement() {
 	Match(SEMICOLON_TOKEN);
 	CoutStatementNode * csn = new CoutStatementNode(exp);
 	return csn;
+}
+
+IfStatementNode * ParserClass::IfStatement() {
+	Match(IFSTATEMENT_TOKEN);
+	Match(LPAREN_TOKEN);
+	ExpressionNode * exp = Expression();
+	Match(RPAREN_TOKEN);
+	StatementNode * state = Statement();
+	IfStatementNode * myif = new IfStatementNode(exp, state);
+	return myif;
+}
+
+WhileStatementNode * ParserClass::WhileStatement() {
+	Match(WHILESTATEMENT_TOKEN);
+	Match(LPAREN_TOKEN);
+	ExpressionNode * exp = Expression();
+	Match(RPAREN_TOKEN);
+	StatementNode *state = Statement();
+	WhileStatementNode * mywhile = new WhileStatementNode(exp, state);
+	return mywhile;
 }
 
 //SOS
@@ -154,6 +187,7 @@ ExpressionNode * ParserClass::PlusMinus() {
 			Match(T.GetTokenType());
 			current = new MinusNode(current, TimesDivide());
 		}
+		//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
 		return current;
 	}
 }
@@ -172,9 +206,8 @@ ExpressionNode * ParserClass::TimesDivide() {
 			Match(T.GetTokenType());
 			current = new DivideNode(current, Factor());
 		}
-		else {
-			return current;
-		}
+		//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
+		return current;
 	}
 }
 

@@ -41,12 +41,14 @@ class NotEqualNode;
 class Node {
 public:
 	virtual ~Node();
+	virtual void Interpret()=0;
 };
 
 class StartNode : public Node {
 public:
 	StartNode(ProgramNode* programNode);
 	~StartNode();
+	virtual void Interpret();
 
 private:
 	ProgramNode* mProgramNode;
@@ -56,6 +58,7 @@ class ProgramNode : public Node {
 public:
 	ProgramNode(BlockNode* blockNode);
 	~ProgramNode();
+	virtual void Interpret();
 
 private:
 	BlockNode* mBlockNode;
@@ -70,6 +73,7 @@ class BlockNode : public StatementNode {
 public:
 	BlockNode(StatementGroupNode* statementGroupNode);
 	~BlockNode();
+	virtual void Interpret();
 
 private:
 	StatementGroupNode* mStatementGroupNode;
@@ -80,6 +84,7 @@ public:
 	StatementGroupNode();
 	void AddStatement(StatementNode* statementNode);
 	~StatementGroupNode();
+	virtual void Interpret();
 
 private:
 	std::vector<StatementNode *> StatementNodeVector;
@@ -90,6 +95,7 @@ class DeclarationStatementNode : public StatementNode {
 public:
 	DeclarationStatementNode(IdentifierNode* identifierNode);
 	~DeclarationStatementNode();
+	virtual void Interpret();
 
 private:
 	IdentifierNode * mIdentifierNode;
@@ -99,18 +105,40 @@ class AssignmentStatementNode : public StatementNode {
 public:
 	AssignmentStatementNode(IdentifierNode* identifierNode, ExpressionNode* expressionNode);
 	~AssignmentStatementNode();
+	virtual void Interpret();
 private:
 	IdentifierNode* mIdentifierNode;
 	ExpressionNode* mExpressionNode;
-
 };
 
 class CoutStatementNode : public StatementNode {
 public:
 	CoutStatementNode(ExpressionNode* expressionNode);
-	//do I need a destructor??
 	~CoutStatementNode();
+	virtual void Interpret();
 private: 
+	ExpressionNode* mExpressionNode;
+};
+
+//ifstatement
+
+class IfStatementNode : public StatementNode {
+public:
+	IfStatementNode(ExpressionNode* expressionNode, StatementNode* statementNode);
+	virtual void Interpret();
+	~IfStatementNode();
+private:
+	StatementNode* mStatementNode;
+	ExpressionNode* mExpressionNode;
+};
+
+class WhileStatementNode : public StatementNode {
+public:
+	WhileStatementNode(ExpressionNode* expressionNode, StatementNode* statementNode);
+	virtual void Interpret();
+	~WhileStatementNode();
+private:
+	StatementNode* mStatementNode;
 	ExpressionNode* mExpressionNode;
 };
 

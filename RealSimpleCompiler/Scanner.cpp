@@ -1,7 +1,7 @@
 #include "Scanner.h"
 
 ScannerClass::ScannerClass(string input) {
-	MSG("Initializing ScannerClass object");
+	//MSG("Initializing ScannerClass object");
 	mLineNumber = 1;
 	mFin.open(input);
 	if (!mFin.is_open()) {

@@ -41,6 +41,8 @@ int main() {
 
 	StartNode * starting = parser.Start();
 
+	starting->Interpret();
+
 	delete starting;
 
 	

@@ -5,8 +5,24 @@ void main() {
 	*/
 
 	int sum;
-	sum = 35 + 400;
+	sum = 35 + 235;
 	cout << sum;
+
+	if(sum > 5){
+		sum = sum + 1;
+		sum = sum + 4;
+	}
+
+	cout << sum;
+
+	/* cout << x
+	x + 1
+	*/
+
+	/* if x > 3
+	*/
+
+	//while
 
 	//hi
 }

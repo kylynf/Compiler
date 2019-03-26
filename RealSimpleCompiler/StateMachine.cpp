@@ -2,7 +2,7 @@
 
 
 StateMachineClass::StateMachineClass() {
-	MSG("Initializing StateMachine Object");
+	//MSG("Initializing StateMachine Object");
 	for (int i = 0; i < LAST_STATE; i++) {
 		for (int j = 0; j < LAST_CHAR; j++) {
 			mLegalMoves[i][j] = CANTMOVE_STATE;

@@ -2,11 +2,11 @@
 
 //constructors
 TokenClass::TokenClass() {
-	MSG("Initializing TokenClass");
+	//MSG("Initializing TokenClass");
 };
 
 TokenClass::TokenClass(TokenType type, const string & lexeme) {
-	MSG("Initializing TokenClass");
+	//MSG("Initializing TokenClass");
 	mType = type;
 	mLexeme = lexeme;
 };
@@ -42,6 +42,14 @@ void TokenClass::CheckReserved()
 
 	else if (mLexeme == "cout") {
 		mType = COUT_TOKEN;
+	}
+
+	else if (mLexeme == "if") {
+		mType = IFSTATEMENT_TOKEN;
+	}
+
+	else if (mLexeme == "while") {
+		mType = WHILESTATEMENT_TOKEN;
 	}
 
 	else if (mLexeme == "<") {

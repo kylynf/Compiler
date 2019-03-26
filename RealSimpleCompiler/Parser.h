@@ -20,6 +20,8 @@ private:
 	DeclarationStatementNode * DeclarationStatement();
 	AssignmentStatementNode * AssignmentStatement();
 	CoutStatementNode * CoutStatement();
+	IfStatementNode * IfStatement();
+	WhileStatementNode * WhileStatement();
 	ExpressionNode * Expression();
 	ExpressionNode * Relational();
 	ExpressionNode * PlusMinus();
