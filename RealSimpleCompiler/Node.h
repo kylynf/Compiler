@@ -19,6 +19,10 @@ class StatementNode;
 class DeclarationStatementNode;
 class AssignmentStatementNode;
 class CoutStatementNode;
+class IfStatementNode;
+class WhileStatementNode;
+class AndNode;
+class OrNode;
 class ExpressionNode;
 class IntegerNode;
 class IdentifierNode;
@@ -177,6 +181,20 @@ public:
 protected:
 	ExpressionNode* mExpressionNodeOne;
 	ExpressionNode* mExpressionNodeTwo;
+};
+
+class OrNode : public BinaryOperatorNode {
+public:
+	OrNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	int Evaluate();
+};
+
+class AndNode : public BinaryOperatorNode {
+public:
+	AndNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	int Evaluate();
 };
 
 class PlusNode : public BinaryOperatorNode {

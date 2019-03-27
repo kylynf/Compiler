@@ -5,10 +5,12 @@ void main() {
 	*/
 
 	int sum;
+	int sum2;
 	sum = 35 + 235;
+	sum2 = 1 + 1;
 	cout << sum;
 
-	if(sum > 5){
+	if(sum > 5 && sum2 < sum){
 		sum = sum + 1;
 		sum = sum + 4;
 	}

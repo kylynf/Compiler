@@ -30,6 +30,14 @@ StateMachineClass::StateMachineClass() {
 	mLegalMoves[START_STATE][WHITESPACE_CHAR] = START_STATE;
 	mLegalMoves[START_STATE][SEMICOLON_CHAR] = SEMICOLON_STATE;
 	mLegalMoves[START_STATE][NEWLINE_CHAR] = START_STATE;
+
+	//and state
+	mLegalMoves[START_STATE][AMPERSAND_CHAR] = AMPERSAND_STATE;
+	mLegalMoves[AMPERSAND_STATE][AMPERSAND_CHAR] = AND_STATE;
+
+	//or state
+	mLegalMoves[START_STATE][PIPE_CHAR] = PIPE_STATE;
+	mLegalMoves[PIPE_STATE][PIPE_CHAR] = OR_STATE;
 	
 
 	//identifier state to anything else????
@@ -140,6 +148,8 @@ StateMachineClass::StateMachineClass() {
 	mCorrespondingTokenTypes[RIGHTCURLY_STATE] = RCURLY_TOKEN;
 	mCorrespondingTokenTypes[INTEGER_STATE] = INTEGER_TOKEN;
 	mCorrespondingTokenTypes[EOF_STATE] = ENDFILE_TOKEN;
+	mCorrespondingTokenTypes[AND_STATE] = AND_TOKEN;
+	mCorrespondingTokenTypes[OR_STATE] = OR_TOKEN;
 	//RETURN TOKEN?!?!?!
 }
 
@@ -152,6 +162,13 @@ MachineState StateMachineClass::UpdateState(char currentCharacter, TokenType & c
 
 	if (isdigit(currentCharacter)) {
 		charType = DIGIT_CHAR;
+	}
+
+	else if (currentCharacter == '|') {
+		charType = PIPE_CHAR;
+	}
+	else if (currentCharacter == '&') {
+		charType = AMPERSAND_CHAR;
 	}
 
 	else if (currentCharacter == '\n') {

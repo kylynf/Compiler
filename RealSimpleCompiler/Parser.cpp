@@ -138,7 +138,37 @@ WhileStatementNode * ParserClass::WhileStatement() {
 
 //SOS
 ExpressionNode * ParserClass::Expression() {
-	return Relational();
+	return Or();
+}
+
+ExpressionNode * ParserClass::Or() {
+	ExpressionNode * current = And();
+	while (true) {
+		TokenClass T = mScanner->PeekNextToken();
+		if (T.GetTokenType() == OR_TOKEN) {
+			Match(T.GetTokenType());
+			current = new OrNode(current, And());
+		}
+		else {
+			return current;
+		}
+	}
+
+}
+
+ExpressionNode * ParserClass::And() {
+	ExpressionNode * current = Relational();
+
+	while (true) {
+		TokenClass T = mScanner->PeekNextToken();
+		if (T.GetTokenType() == AND_TOKEN) {
+			Match(T.GetTokenType());
+			current = new AndNode(current, Relational());
+		}
+		else {
+			return current;
+		}
+	}
 }
 
 ExpressionNode * ParserClass::Relational() {

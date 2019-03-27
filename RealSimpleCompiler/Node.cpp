@@ -195,6 +195,24 @@ BinaryOperatorNode::~BinaryOperatorNode() {
 	MSG("binary operator node delete expression node two");
 }
 
+int OrNode::Evaluate() {
+	if (mExpressionNodeOne->Evaluate() || mExpressionNodeTwo->Evaluate()) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+int AndNode::Evaluate() {
+	if (mExpressionNodeOne->Evaluate() && mExpressionNodeTwo->Evaluate()) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
 
 //recursively call evaluate on left and right children
 //return the sum of their return values

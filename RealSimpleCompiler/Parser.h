@@ -23,6 +23,8 @@ private:
 	IfStatementNode * IfStatement();
 	WhileStatementNode * WhileStatement();
 	ExpressionNode * Expression();
+	ExpressionNode * Or();
+	ExpressionNode * And();
 	ExpressionNode * Relational();
 	ExpressionNode * PlusMinus();
 	ExpressionNode * TimesDivide();
