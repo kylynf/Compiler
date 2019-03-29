@@ -18,8 +18,8 @@ TokenClass ParserClass::Match(TokenType TT) {
 		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You were supposed to get " << t.GetTokenTypeName();
 		exit(1);
 	}
-	cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
-	cout << "Lexeme " << t.GetLexeme() << endl;
+	//cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
+	//cout << "Lexeme " << t.GetLexeme() << endl;
 	return t;
 }
 
@@ -153,7 +153,6 @@ ExpressionNode * ParserClass::Or() {
 			return current;
 		}
 	}
-
 }
 
 ExpressionNode * ParserClass::And() {
@@ -217,8 +216,10 @@ ExpressionNode * ParserClass::PlusMinus() {
 			Match(T.GetTokenType());
 			current = new MinusNode(current, TimesDivide());
 		}
-		//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
-		return current;
+		else {
+			//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
+			return current;
+		}
 	}
 }
 
@@ -236,8 +237,10 @@ ExpressionNode * ParserClass::TimesDivide() {
 			Match(T.GetTokenType());
 			current = new DivideNode(current, Factor());
 		}
-		//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
-		return current;
+		else {
+			//here the book has an else statement but doesnt make sense to have else statement bc current wouldnt be returned
+			return current;
+		}
 	}
 }
 

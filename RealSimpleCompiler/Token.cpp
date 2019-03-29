@@ -126,9 +126,9 @@ void TokenClass::CheckReserved()
 	}
 
 	//CHECK ME
-	else if (mLexeme == "identifier") {
+	/*else if (mLexeme == "identifier") {
 		mType = IDENTIFIER_TOKEN;
-	}
+	}*/
 
 	else if (mLexeme == "0" || mLexeme == "1" || mLexeme == "2" || mLexeme == "3" || mLexeme == "4" || mLexeme == "5" || mLexeme == "6" || mLexeme == "7" || mLexeme == "8" || mLexeme == "9") {
 		mType = INTEGER_TOKEN;
@@ -140,9 +140,9 @@ void TokenClass::CheckReserved()
 	}
 
 	//check me
-	else if (mLexeme == "identifier") {
+	/*else if (mLexeme == "identifier") {
 		mType = ENDFILE_TOKEN;
-	}
+	}*/
 	
 }
 
