@@ -70,7 +70,7 @@ int SymbolTableClass::GetIndex(const std::string & s) {
 	//returns -1 if variable <s> is not there
 	for (size_t i = 0; i < SymbolTableVector.size(); i++) {
 		if (SymbolTableVector[i].mLabel == s) {
-			return i;
+			return (int)i;
 		}
 	}
 	return -1;	

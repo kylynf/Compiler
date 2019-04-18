@@ -31,6 +31,9 @@ StateMachineClass::StateMachineClass() {
 	mLegalMoves[START_STATE][SEMICOLON_CHAR] = SEMICOLON_STATE;
 	mLegalMoves[START_STATE][NEWLINE_CHAR] = START_STATE;
 
+	mLegalMoves[START_STATE][NOT_CHAR] = NOT_STATE;
+	mLegalMoves[NOT_STATE][ASSIGNMENT_CHAR] = NOTEQUAL_STATE;
+
 	//and state
 	mLegalMoves[START_STATE][AMPERSAND_CHAR] = AMPERSAND_STATE;
 	mLegalMoves[AMPERSAND_STATE][AMPERSAND_CHAR] = AND_STATE;
@@ -150,6 +153,7 @@ StateMachineClass::StateMachineClass() {
 	mCorrespondingTokenTypes[EOF_STATE] = ENDFILE_TOKEN;
 	mCorrespondingTokenTypes[AND_STATE] = AND_TOKEN;
 	mCorrespondingTokenTypes[OR_STATE] = OR_TOKEN;
+	mCorrespondingTokenTypes[NOTEQUAL_STATE] = NOTEQUAL_TOKEN;
 	//RETURN TOKEN?!?!?!
 }
 

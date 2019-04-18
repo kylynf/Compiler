@@ -8,6 +8,7 @@
 //#include <fstream>
 
 #include "Symbol.h"
+#include "Instructions.h"
 
 //sum1, sum2, sum3 for testing 
 class Node;
@@ -46,6 +47,7 @@ class Node {
 public:
 	virtual ~Node();
 	virtual void Interpret()=0;
+	virtual void Code(InstructionsClass &code) = 0;
 };
 
 class StartNode : public Node {
@@ -53,6 +55,7 @@ public:
 	StartNode(ProgramNode* programNode);
 	~StartNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 
 private:
 	ProgramNode* mProgramNode;
@@ -63,6 +66,7 @@ public:
 	ProgramNode(BlockNode* blockNode);
 	~ProgramNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 
 private:
 	BlockNode* mBlockNode;
@@ -78,6 +82,7 @@ public:
 	BlockNode(StatementGroupNode* statementGroupNode);
 	~BlockNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 
 private:
 	StatementGroupNode* mStatementGroupNode;
@@ -89,6 +94,7 @@ public:
 	void AddStatement(StatementNode* statementNode);
 	~StatementGroupNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 
 private:
 	std::vector<StatementNode *> StatementNodeVector;
@@ -100,6 +106,7 @@ public:
 	DeclarationStatementNode(IdentifierNode* identifierNode);
 	~DeclarationStatementNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 
 private:
 	IdentifierNode * mIdentifierNode;
@@ -110,6 +117,7 @@ public:
 	AssignmentStatementNode(IdentifierNode* identifierNode, ExpressionNode* expressionNode);
 	~AssignmentStatementNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 private:
 	IdentifierNode* mIdentifierNode;
 	ExpressionNode* mExpressionNode;
@@ -120,6 +128,7 @@ public:
 	CoutStatementNode(ExpressionNode* expressionNode);
 	~CoutStatementNode();
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 private: 
 	ExpressionNode* mExpressionNode;
 };
@@ -130,6 +139,7 @@ class IfStatementNode : public StatementNode {
 public:
 	IfStatementNode(ExpressionNode* expressionNode, StatementNode* statementNode);
 	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
 	~IfStatementNode();
 private:
 	StatementNode* mStatementNode;
@@ -141,6 +151,7 @@ public:
 	WhileStatementNode(ExpressionNode* expressionNode, StatementNode* statementNode);
 	virtual void Interpret();
 	~WhileStatementNode();
+	virtual void Code(InstructionsClass &code);
 private:
 	StatementNode* mStatementNode;
 	ExpressionNode* mExpressionNode;
@@ -149,6 +160,7 @@ private:
 class ExpressionNode {
 public:
 	virtual int Evaluate() = 0;
+	virtual void CodeEvaluate(InstructionsClass & code) = 0;
 	virtual ~ExpressionNode() {};
 };
 
@@ -156,6 +168,7 @@ class IntegerNode : public ExpressionNode {
 public:
 	IntegerNode(int number);
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 	//are we supposed to have an expression node destructor here??
 private:
 	int mNumber;
@@ -168,6 +181,7 @@ public:
 	void SetValue(int v);
 	int GetIndex();
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 	//are we supposed to have an expression node destructor here??
 private:
 	SymbolTableClass* mSymbolTable;
@@ -188,6 +202,7 @@ public:
 	OrNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class AndNode : public BinaryOperatorNode {
@@ -195,6 +210,7 @@ public:
 	AndNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class PlusNode : public BinaryOperatorNode {
@@ -202,6 +218,7 @@ public:
 	PlusNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class MinusNode : public BinaryOperatorNode {
@@ -209,6 +226,7 @@ public:
 	MinusNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class TimesNode : public BinaryOperatorNode {
@@ -216,6 +234,7 @@ public:
 	TimesNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class DivideNode : public BinaryOperatorNode {
@@ -223,6 +242,7 @@ public:
 	DivideNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class LessNode : public BinaryOperatorNode {
@@ -230,6 +250,7 @@ public:
 	LessNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class GreaterNode : public BinaryOperatorNode {
@@ -237,6 +258,7 @@ public:
 	GreaterNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class LessEqualNode : public BinaryOperatorNode {
@@ -244,6 +266,7 @@ public:
 	LessEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class GreaterEqualNode : public BinaryOperatorNode {
@@ -251,6 +274,7 @@ public:
 	GreaterEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class EqualNode : public BinaryOperatorNode {
@@ -258,6 +282,7 @@ public:
 	EqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };
 
 class NotEqualNode : public BinaryOperatorNode {
@@ -265,4 +290,5 @@ public:
 	NotEqualNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	virtual int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
 };

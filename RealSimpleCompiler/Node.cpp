@@ -13,6 +13,10 @@ void StartNode::Interpret() {
 	MSG("Start node called interpret on program node");
 }
 
+void StartNode::Code(InstructionsClass &mycode) {
+	mProgramNode->Code(mycode);
+}
+
 StartNode::~StartNode() {
 	delete mProgramNode;
 	MSG("Start node destructor deleted program node");
@@ -27,6 +31,10 @@ void ProgramNode::Interpret() {
 	MSG("Program node called interpret on block node");
 }
 
+void ProgramNode::Code(InstructionsClass &mycode) {
+	mBlockNode->Code(mycode);
+}
+
 ProgramNode::~ProgramNode(){
 	delete mBlockNode;
 	MSG("Program node destructor deleted Block Node");
@@ -39,6 +47,10 @@ BlockNode::BlockNode(StatementGroupNode* statementGroupNode) {
 void BlockNode::Interpret() {
 	mStatementGroupNode->Interpret();
 	MSG("Block node called interpret on statementgroup");
+}
+
+void BlockNode::Code(InstructionsClass &mycode){
+	mStatementGroupNode->Code(mycode);
 }
 
 BlockNode::~BlockNode() {
@@ -68,6 +80,13 @@ void StatementGroupNode::Interpret() {
 	MSG("Statement Group called interpret on the statement node vector");
 }
 
+void StatementGroupNode::Code(InstructionsClass & mycode) {
+	for (size_t i = 0; i < StatementNodeVector.size(); i++) {
+		StatementNodeVector[i]->Code(mycode);
+	}
+	MSG("Statement Group called code on the statement node vector");
+}
+
 DeclarationStatementNode::DeclarationStatementNode(IdentifierNode* identifierNode) {
 	mIdentifierNode = identifierNode;
 }
@@ -75,6 +94,10 @@ DeclarationStatementNode::DeclarationStatementNode(IdentifierNode* identifierNod
 void DeclarationStatementNode::Interpret() {
 	mIdentifierNode->DeclareVariable();
 	MSG("Declaration statement called declare variable on midentifiernode");
+}
+
+void DeclarationStatementNode::Code(InstructionsClass &code) {
+	mIdentifierNode->DeclareVariable();
 }
 
 DeclarationStatementNode::~DeclarationStatementNode() {
@@ -90,6 +113,13 @@ void AssignmentStatementNode::Interpret() {
 	int value = mExpressionNode->Evaluate();
 	mIdentifierNode->SetValue(value);
 	MSG("Assignment statement node set the value on the identifier node");
+}
+
+
+void AssignmentStatementNode::Code(InstructionsClass & mycode) {
+	mExpressionNode->CodeEvaluate(mycode);
+	int index = mIdentifierNode->GetIndex();
+	mycode.PopAndStore(index);
 }
 
 AssignmentStatementNode::~AssignmentStatementNode() {
@@ -111,6 +141,11 @@ void CoutStatementNode::Interpret() {
 	MSG("Cout interpret ran");
 }
 
+void CoutStatementNode::Code(InstructionsClass & mycode) {
+	mExpressionNode->CodeEvaluate(mycode);
+	mycode.PopAndWrite();
+}
+
 CoutStatementNode::~CoutStatementNode() {
 	delete mExpressionNode;
 	MSG("Cout statement deleted expression node");
@@ -126,6 +161,15 @@ void IfStatementNode::Interpret() {
 		mStatementNode->Interpret();
 	}
 	MSG("IF statement node called interpret on mstatement node");
+}
+
+void IfStatementNode::Code(InstructionsClass & mycode) {
+	mExpressionNode->CodeEvaluate(mycode);
+	unsigned char * JumpAddress = mycode.SkipIfZeroStack();
+	unsigned char * a1 = mycode.GetAddress();
+	mStatementNode->Code(mycode);
+	unsigned char * a2 = mycode.GetAddress();
+	mycode.SetOffset(JumpAddress, int(a2 - a1));
 }
 
 IfStatementNode::~IfStatementNode() {
@@ -147,11 +191,24 @@ void WhileStatementNode::Interpret() {
 	MSG("While statement node called interpret on statement node");
 }
 
+//fixme
+void WhileStatementNode::Code(InstructionsClass & mycode) {
+	unsigned char * a0 = mycode.GetAddress();
+	mExpressionNode->CodeEvaluate(mycode);
+	unsigned char * JumpAddress1 = mycode.SkipIfZeroStack();
+	unsigned char * a1 = mycode.GetAddress();
+	mStatementNode->Code(mycode);
+	unsigned char * JumpAddress2 = mycode.Jump();
+	unsigned char * a2 = mycode.GetAddress();
+	mycode.SetOffset(JumpAddress1, int(a2 - a1));
+	mycode.SetOffset(JumpAddress2, int(a0 - a2));
+}
+
 WhileStatementNode::~WhileStatementNode() {
 	delete mExpressionNode;
 	delete mStatementNode;
-	MSG("If statement deleted expression node");
-	MSG("If statement deleted statement node");
+	MSG("while statement deleted expression node");
+	MSG("while statement deleted statement node");
 }
 
 IntegerNode::IntegerNode(int number) {
@@ -162,6 +219,10 @@ int IntegerNode::Evaluate() {
 	return mNumber;
 }
 
+void IntegerNode::CodeEvaluate(InstructionsClass & code) {
+	code.PushValue(mNumber);
+}
+
 IdentifierNode::IdentifierNode(std::string label, SymbolTableClass* symbolTableClass) {
 	mSymbolTable = symbolTableClass;
 	mLabel = label;
@@ -169,6 +230,11 @@ IdentifierNode::IdentifierNode(std::string label, SymbolTableClass* symbolTableC
 
 void IdentifierNode::DeclareVariable() {
 	mSymbolTable->AddEntry(mLabel);
+}
+
+void IdentifierNode::CodeEvaluate(InstructionsClass & mycode) {
+	int index = GetIndex();
+	mycode.PushVariable(index);
 }
 
 void IdentifierNode::SetValue(int v) {
@@ -204,6 +270,12 @@ int OrNode::Evaluate() {
 	}
 }
 
+void OrNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopOrPush();
+}
+
 int AndNode::Evaluate() {
 	if (mExpressionNodeOne->Evaluate() && mExpressionNodeTwo->Evaluate()) {
 		return 1;
@@ -213,17 +285,33 @@ int AndNode::Evaluate() {
 	}
 }
 
+void AndNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopAndPush();
+}
+
 
 //recursively call evaluate on left and right children
 //return the sum of their return values
 int PlusNode::Evaluate() {
 	return mExpressionNodeOne->Evaluate() + mExpressionNodeTwo->Evaluate();
+}
 
+void PlusNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopAddPush();
 }
 
 int MinusNode::Evaluate() {
 	return mExpressionNodeOne->Evaluate() - mExpressionNodeTwo->Evaluate();
+}
 
+void MinusNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopSubPush();
 }
 
 int TimesNode::Evaluate() {
@@ -231,9 +319,20 @@ int TimesNode::Evaluate() {
 
 }
 
+void TimesNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopMulPush();
+}
+
 int DivideNode::Evaluate() {
 	return mExpressionNodeOne->Evaluate() / mExpressionNodeTwo->Evaluate();
+}
 
+void DivideNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopDivPush();
 }
 
 
@@ -246,6 +345,12 @@ int LessNode::Evaluate() {
 	}
 }
 
+void LessNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopLessPush();
+}
+
 int GreaterNode::Evaluate() {
 	if (mExpressionNodeOne->Evaluate() > mExpressionNodeTwo->Evaluate()) {
 		return 1;
@@ -253,6 +358,12 @@ int GreaterNode::Evaluate() {
 	else {
 		return 0;
 	}
+}
+
+void GreaterNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopGreaterPush();
 }
 
 int LessEqualNode::Evaluate() {
@@ -264,6 +375,12 @@ int LessEqualNode::Evaluate() {
 	}
 }
 
+void LessEqualNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopLessEqualPush();
+}
+
 int GreaterEqualNode::Evaluate() {
 	if (mExpressionNodeOne->Evaluate() >= mExpressionNodeTwo->Evaluate()) {
 		return 1;
@@ -271,6 +388,12 @@ int GreaterEqualNode::Evaluate() {
 	else {
 		return 0;
 	}
+}
+
+void GreaterEqualNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopGreaterEqualPush();
 }
 
 int EqualNode::Evaluate() {
@@ -282,6 +405,12 @@ int EqualNode::Evaluate() {
 	}
 }
 
+void EqualNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopEqualPush();
+}
+
 int NotEqualNode::Evaluate() {
 	if (mExpressionNodeOne->Evaluate() != mExpressionNodeTwo->Evaluate()) {
 		return 1;
@@ -289,4 +418,10 @@ int NotEqualNode::Evaluate() {
 	else {
 		return 0;
 	}
+}
+
+void NotEqualNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopNotEqualPush();
 }

@@ -15,11 +15,11 @@ StartNode * ParserClass::Start() {
 TokenClass ParserClass::Match(TokenType TT) {
 	TokenClass t = mScanner->GetNextToken();
 	if (t.GetTokenType() != TT) {
-		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You were supposed to get " << t.GetTokenTypeName();
+		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You got " << t.GetTokenTypeName();
 		exit(1);
 	}
 	//cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
-	//cout << "Lexeme " << t.GetLexeme() << endl;
+	//cout<< "Lexeme " << t.GetLexeme() << endl;
 	return t;
 }
 
