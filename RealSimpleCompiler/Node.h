@@ -229,8 +229,8 @@ private:
 
 class MinusEqualNode : public AssignmentStatementNode {
 public:
-	//MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) : AssignmentStatementNode(identifierNode, expressionNode) {
-	//};
+	/*MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) : AssignmentStatementNode(identifierNode, expressionNode) {
+	};*/
 	MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode);
 	virtual void Interpret();
 	virtual void Code(InstructionsClass &code);

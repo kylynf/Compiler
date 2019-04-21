@@ -103,12 +103,14 @@ AssignmentStatementNode * ParserClass::AssignmentStatement() {
 	if (T.GetTokenType() == PLUSEQUAL_TOKEN) {
 		Match(T.GetTokenType());
 		ExpressionNode * exp = Expression();
+		Match(SEMICOLON_TOKEN);
 		AssignmentStatementNode * asn = new PlusEqualNode(ident, exp);
 		return asn;
 	}
 	if (T.GetTokenType() == MINUSEQUAL_TOKEN) {
 		Match(T.GetTokenType());
 		ExpressionNode * exp = Expression();
+		Match(SEMICOLON_TOKEN);
 		AssignmentStatementNode * asn = new MinusEqualNode(ident, exp);
 		return asn;
 	}

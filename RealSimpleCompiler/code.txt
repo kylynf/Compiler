@@ -1,7 +1,8 @@
 void main() {
-	cout << 901 << 902 << endl;
 	int sum;
 	sum = 1;
 	sum += 3;
-	cout << sum;
+	cout << sum << endl;
+	cout << 901 << 902 << endl;
+	cout << 55 << endl;
 }
