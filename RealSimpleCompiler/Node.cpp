@@ -128,27 +128,47 @@ AssignmentStatementNode::~AssignmentStatementNode() {
 	MSG("Assignment statement node destructor deleted identifier node and expression node");
 }
 
-CoutStatementNode::CoutStatementNode(ExpressionNode* expressionNode) {
-	mExpressionNode = expressionNode;
+CoutStatementNode::CoutStatementNode()
+{
+	MSG("cout is initializing");
 }
 
 void CoutStatementNode::Interpret() {
-	int answer = mExpressionNode->Evaluate();
-	cout << "The answer is " << answer << std::endl;
-	//cout << "Evaluate returned" << answer;
-	//carriage return
-	cout << '\r';
+	for (int i = 0; i < mExpressionNodeVector.size(); i++) {
+		if (mExpressionNodeVector[i] == NULL) {
+			std::cout << std::endl;
+			continue;
+		}
+		int answer = mExpressionNodeVector[i]->Evaluate();
+		cout << "The answer is " << answer << std::endl;
+		//cout << "Evaluate returned" << answer;
+		//carriage return
+		//cout << '\r';
+	}
+
 	MSG("Cout interpret ran");
 }
 
+void CoutStatementNode::AddStatement(ExpressionNode * expressionNode) {
+	mExpressionNodeVector.push_back(expressionNode);
+}
+
 void CoutStatementNode::Code(InstructionsClass & mycode) {
-	mExpressionNode->CodeEvaluate(mycode);
-	mycode.PopAndWrite();
+	for (int i = 0; i < mExpressionNodeVector.size(); i++) {
+		if (mExpressionNodeVector[i] == NULL) {
+			mycode.WriteEndl();
+			continue;
+		}
+		mExpressionNodeVector[i]->CodeEvaluate(mycode);
+		mycode.PopAndWrite();
+	}
 }
 
 CoutStatementNode::~CoutStatementNode() {
-	delete mExpressionNode;
-	MSG("Cout statement deleted expression node");
+	for (int i = 0; i < mExpressionNodeVector.size(); i++) {
+		delete mExpressionNodeVector[i];
+		MSG("deleting coutstatementnode");
+	}
 }
 
 IfStatementNode::IfStatementNode(ExpressionNode* expressionNode, StatementNode* statementNode) {
@@ -291,6 +311,44 @@ void AndNode::CodeEvaluate(InstructionsClass & mycode) {
 	mycode.PopPopAndPush();
 }
 
+PlusEqualNode::PlusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) :AssignmentStatementNode(identifierNode, expressionNode)
+{
+	mExpressionNode = expressionNode;
+	mIdentifierNode = identifierNode;
+}
+
+void PlusEqualNode::Interpret() {
+	int value = mExpressionNode->Evaluate();
+	mIdentifierNode->SetValue(mIdentifierNode->Evaluate() + value);
+}
+
+void PlusEqualNode::Code(InstructionsClass & mycode) {
+	mIdentifierNode->CodeEvaluate(mycode);
+	mExpressionNode->CodeEvaluate(mycode);
+	mycode.PopPopAddPush();
+	int index = mIdentifierNode->GetIndex();
+	mycode.PopAndStore(index);
+}
+
+
+MinusEqualNode::MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) :AssignmentStatementNode(identifierNode, expressionNode) 
+{
+	mExpressionNode = expressionNode;
+	mIdentifierNode = identifierNode;
+}
+
+void MinusEqualNode::Interpret() {
+	int value = mExpressionNode->Evaluate();
+	mIdentifierNode->SetValue(mIdentifierNode->Evaluate() - value);
+}
+
+void MinusEqualNode::Code(InstructionsClass & mycode) {
+	mIdentifierNode->CodeEvaluate(mycode);
+	mExpressionNode->CodeEvaluate(mycode);
+	mycode.PopPopAddPush();
+	int index = mIdentifierNode->GetIndex();
+	mycode.PopAndStore(index);
+}
 
 //recursively call evaluate on left and right children
 //return the sum of their return values

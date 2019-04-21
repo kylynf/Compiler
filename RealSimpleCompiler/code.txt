@@ -1,9 +1,7 @@
 void main() {
+	cout << 901 << 902 << endl;
 	int sum;
-	int i;
 	sum = 1;
-	i = 0;
-	if(sum != i){
-		cout << 501;
-	}
+	sum += 3;
+	cout << sum;
 }

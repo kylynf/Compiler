@@ -84,9 +84,20 @@ void TokenClass::CheckReserved()
 	else if (mLexeme == "<<") {
 		mType = INSERTION_TOKEN;
 	}
+	else if (mLexeme == "endl") {
+		mType = ENDL_TOKEN;
+	}
 
 	else if (mLexeme == "=") {
 		mType = ASSIGNMENT_TOKEN;
+	}
+
+	else if (mLexeme == "+=") {
+		mType = PLUSEQUAL_TOKEN;
+	} 
+
+	else if (mLexeme == "-=") {
+		mType = MINUSEQUAL_TOKEN;
 	}
 
 	else if (mLexeme == "+") {

@@ -18,8 +18,8 @@ TokenClass ParserClass::Match(TokenType TT) {
 		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You got " << t.GetTokenTypeName();
 		exit(1);
 	}
-	//cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
-	//cout<< "Lexeme " << t.GetLexeme() << endl;
+	cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
+	cout<< "Lexeme " << t.GetLexeme() << endl;
 	return t;
 }
 
@@ -99,7 +99,20 @@ DeclarationStatementNode * ParserClass::DeclarationStatement() {
 //sos
 AssignmentStatementNode * ParserClass::AssignmentStatement() {
 	IdentifierNode * ident = Identifier();
-	Match(ASSIGNMENT_TOKEN);
+	TokenClass T = mScanner->PeekNextToken();
+	if (T.GetTokenType() == PLUSEQUAL_TOKEN) {
+		Match(T.GetTokenType());
+		ExpressionNode * exp = Expression();
+		AssignmentStatementNode * asn = new PlusEqualNode(ident, exp);
+		return asn;
+	}
+	if (T.GetTokenType() == MINUSEQUAL_TOKEN) {
+		Match(T.GetTokenType());
+		ExpressionNode * exp = Expression();
+		AssignmentStatementNode * asn = new MinusEqualNode(ident, exp);
+		return asn;
+	}
+	Match(T.GetTokenType());
 	ExpressionNode * exp = Expression();
 	Match(SEMICOLON_TOKEN);
 	AssignmentStatementNode * asn = new AssignmentStatementNode(ident, exp);
@@ -109,11 +122,34 @@ AssignmentStatementNode * ParserClass::AssignmentStatement() {
 //sos
 CoutStatementNode * ParserClass::CoutStatement() {
 	Match(COUT_TOKEN);
-	Match(INSERTION_TOKEN);
-	ExpressionNode * exp = Expression();
-	Match(SEMICOLON_TOKEN);
-	CoutStatementNode * csn = new CoutStatementNode(exp);
-	return csn;
+	CoutStatementNode * csn = new CoutStatementNode();
+	while (true) {
+		Match(INSERTION_TOKEN);
+		TokenClass T = mScanner->PeekNextToken();
+		if (T.GetTokenType() == ENDL_TOKEN) {
+			Match(T.GetTokenType());
+			csn->AddStatement(NULL);
+			TokenClass T = mScanner->PeekNextToken();
+			if (T.GetTokenType() == INSERTION_TOKEN) {
+				continue;
+			}
+			else {
+				Match(SEMICOLON_TOKEN);
+				return csn;
+			}
+		}
+		ExpressionNode * exp = Expression();
+		csn->AddStatement(exp);
+		//TokenClass T = mScanner->PeekNextToken();
+		if (T.GetTokenType() == INSERTION_TOKEN) {
+			continue;
+		}
+		if (T.GetTokenType() == SEMICOLON_TOKEN) {
+			Match(SEMICOLON_TOKEN);
+			return csn;
+		}
+		
+	}
 }
 
 IfStatementNode * ParserClass::IfStatement() {

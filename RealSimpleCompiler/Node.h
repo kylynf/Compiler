@@ -125,12 +125,13 @@ private:
 
 class CoutStatementNode : public StatementNode {
 public:
-	CoutStatementNode(ExpressionNode* expressionNode);
+	CoutStatementNode();
 	~CoutStatementNode();
 	virtual void Interpret();
 	virtual void Code(InstructionsClass &code);
+	void AddStatement(ExpressionNode* expressionNode);
 private: 
-	ExpressionNode* mExpressionNode;
+	std::vector<ExpressionNode *> mExpressionNodeVector; //vector to hold the statements
 };
 
 //ifstatement
@@ -211,6 +212,32 @@ public:
 	};
 	int Evaluate();
 	virtual void CodeEvaluate(InstructionsClass & code);
+};
+
+class PlusEqualNode : public AssignmentStatementNode {
+public:
+	/*PlusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) : AssignmentStatementNode(identifierNode, expressionNode) {
+	};*/
+	PlusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode);
+	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
+private:
+	ExpressionNode * mExpressionNode;
+	IdentifierNode * mIdentifierNode;
+
+};
+
+class MinusEqualNode : public AssignmentStatementNode {
+public:
+	//MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) : AssignmentStatementNode(identifierNode, expressionNode) {
+	//};
+	MinusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode);
+	virtual void Interpret();
+	virtual void Code(InstructionsClass &code);
+private:
+	ExpressionNode * mExpressionNode;
+	IdentifierNode * mIdentifierNode;
+
 };
 
 class PlusNode : public BinaryOperatorNode {
