@@ -18,8 +18,8 @@ TokenClass ParserClass::Match(TokenType TT) {
 		cerr << "The expected token type is: " << TokenClass::GetTokenTypeName(TT) << "You got " << t.GetTokenTypeName();
 		exit(1);
 	}
-	cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
-	cout<< "Lexeme " << t.GetLexeme() << endl;
+	//cout << "Current Token: " << t.GetTokenTypeName() << " successful" << endl;
+	//cout<< "Lexeme " << t.GetLexeme() << endl;
 	return t;
 }
 

@@ -345,7 +345,7 @@ void MinusEqualNode::Interpret() {
 void MinusEqualNode::Code(InstructionsClass & mycode) {
 	mIdentifierNode->CodeEvaluate(mycode);
 	mExpressionNode->CodeEvaluate(mycode);
-	mycode.PopPopAddPush();
+	mycode.PopPopSubPush();
 	int index = mIdentifierNode->GetIndex();
 	mycode.PopAndStore(index);
 }
