@@ -209,35 +209,49 @@ ExpressionNode * ParserClass::And() {
 }
 
 ExpressionNode * ParserClass::Relational() {
-	ExpressionNode * current = PlusMinus();
+	ExpressionNode * current = ShiftRight();
 
 	//Handle the optional tail
 	TokenClass T = mScanner->PeekNextToken();
 	if (T.GetTokenType() == LESS_TOKEN) {
 		Match(T.GetTokenType());
-		current = new LessNode(current, PlusMinus());
+		current = new LessNode(current, ShiftRight());
 	}
 	else if (T.GetTokenType() == LESSEQUAL_TOKEN) {
 		Match(T.GetTokenType());
-		current = new LessEqualNode(current, PlusMinus());
+		current = new LessEqualNode(current, ShiftRight());
 	}
 	else if (T.GetTokenType() == GREATER_TOKEN) {
 		Match(T.GetTokenType());
-		current = new GreaterNode(current, PlusMinus());
+		current = new GreaterNode(current, ShiftRight());
 	}
 	else if (T.GetTokenType() == GREATEREQUAL_TOKEN) {
 		Match(T.GetTokenType());
-		current = new GreaterEqualNode(current, PlusMinus());
+		current = new GreaterEqualNode(current, ShiftRight());
 	}
 	else if (T.GetTokenType() == ISEQUAL_TOKEN) {
 		Match(T.GetTokenType());
-		current = new EqualNode(current, PlusMinus());
+		current = new EqualNode(current, ShiftRight());
 	}
 	else if (T.GetTokenType() == NOTEQUAL_TOKEN) {
 		Match(T.GetTokenType());
-		current = new NotEqualNode(current, PlusMinus());
+		current = new NotEqualNode(current, ShiftRight());
 	}
 	return current;
+}
+
+ExpressionNode * ParserClass::ShiftRight() {
+	ExpressionNode * current = PlusMinus();
+	while (true) {
+		TokenClass T = mScanner->PeekNextToken();
+		if (T.GetTokenType() == SHIFTRIGHT_TOKEN) {
+			Match(T.GetTokenType());
+			current = new ShiftRightNode(current, PlusMinus());
+		}
+		else {
+			return current;
+		}
+	}
 }
 
 ExpressionNode * ParserClass::PlusMinus() {

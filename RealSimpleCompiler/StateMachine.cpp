@@ -127,6 +127,7 @@ StateMachineClass::StateMachineClass() {
 	mLegalMoves[LESS_STATE][ASSIGNMENT_CHAR] = LESSEQ_STATE;
 
 	mLegalMoves[START_STATE][GREATER_CHAR] = GREATER_STATE;
+	mLegalMoves[GREATER_STATE][GREATER_CHAR] = SHIFTRIGHT_STATE;
 	mLegalMoves[GREATER_STATE][ASSIGNMENT_CHAR] = GREATEREQ_STATE;
 
 	mLegalMoves[START_STATE][ASSIGNMENT_CHAR] = ASSIGNMENT_STATE;
@@ -158,6 +159,7 @@ StateMachineClass::StateMachineClass() {
 	mCorrespondingTokenTypes[AND_STATE] = AND_TOKEN;
 	mCorrespondingTokenTypes[OR_STATE] = OR_TOKEN;
 	mCorrespondingTokenTypes[NOTEQUAL_STATE] = NOTEQUAL_TOKEN;
+	mCorrespondingTokenTypes[SHIFTRIGHT_STATE] = SHIFTRIGHT_TOKEN;
 	//RETURN TOKEN?!?!?!
 }
 

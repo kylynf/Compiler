@@ -28,6 +28,9 @@ const unsigned char MUL_EAX_EBX1 = 0xF7;
 const unsigned char MUL_EAX_EBX2 = 0xEB;
 const unsigned char DIV_EAX_EBX1 = 0xF7;
 const unsigned char DIV_EAX_EBX2 = 0xFB;
+const unsigned char SAR_EAX_ECX1 = 0xD3;
+const unsigned char SAR_EAX_ECX2 = 0xF8;
+const unsigned char POP_ECX = 0x59;
 const unsigned char CDQ = 0x99;
 const unsigned char CMP_EAX_EBX1 = 0x3B; // compares A and B registers.
 const unsigned char CMP_EAX_EBX2 = 0xC3;
@@ -248,6 +251,15 @@ void InstructionsClass::PopPopDivPush()
 	Encode(CDQ);// Necessary to clear the D register for a 64 bit divide.
 	Encode(DIV_EAX_EBX1);
 	Encode(DIV_EAX_EBX2);
+	Encode(PUSH_EAX);
+}
+
+void InstructionsClass::PopPopShiftPush()
+{
+	Encode(POP_ECX);
+	Encode(POP_EAX);
+	Encode(SAR_EAX_ECX1);
+	Encode(SAR_EAX_ECX2);
 	Encode(PUSH_EAX);
 }
 

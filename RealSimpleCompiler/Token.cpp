@@ -56,11 +56,21 @@ void TokenClass::CheckReserved()
 	}
 	else if (mLexeme == "||") {
 		mType = OR_TOKEN;
+	} 
+	else if (mLexeme == ">>") {
+		mType = SHIFTRIGHT_TOKEN;
 	}
 	else if (mLexeme == "<") {
 		mType = LESS_TOKEN;
 	}
-
+	else if (mLexeme == "true") {
+		mType = INTEGER_TOKEN;
+		mLexeme = "1";
+	}
+	else if(mLexeme == "false"){
+		mType = INTEGER_TOKEN;
+		mLexeme = "0";
+	}
 	else if (mLexeme == "<=") {
 		mType = LESSEQUAL_TOKEN;
 	}

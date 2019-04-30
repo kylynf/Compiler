@@ -1,14 +1,9 @@
 void main() {
-	int mysum;
-	int sum;
-	sum = 10;
-	mysum = 500;
-	while(sum != 0){
-		cout << sum << endl;
-		sum -= 1;
-	}
-	mysum += 321;
-	cout << mysum << endl << endl;
-	cout << 901 << 902 << endl;
-	cout << 22 << endl;
+	int x;
+	x = 24;
+	int y;
+	y = 2;
+	cout << (x >> y) << endl;
+	cout << (x >> y-1) << endl;
+	cout << (x >> y==2) << endl;
 }

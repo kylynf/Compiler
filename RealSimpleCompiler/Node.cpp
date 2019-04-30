@@ -311,6 +311,16 @@ void AndNode::CodeEvaluate(InstructionsClass & mycode) {
 	mycode.PopPopAndPush();
 }
 
+int ShiftRightNode::Evaluate() {
+	return mExpressionNodeOne->Evaluate() >> mExpressionNodeTwo->Evaluate();
+}
+
+void ShiftRightNode::CodeEvaluate(InstructionsClass & mycode) {
+	mExpressionNodeOne->CodeEvaluate(mycode);
+	mExpressionNodeTwo->CodeEvaluate(mycode);
+	mycode.PopPopShiftPush();
+}
+
 PlusEqualNode::PlusEqualNode(IdentifierNode* identifierNode, ExpressionNode * expressionNode) :AssignmentStatementNode(identifierNode, expressionNode)
 {
 	mExpressionNode = expressionNode;

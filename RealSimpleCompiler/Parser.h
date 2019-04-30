@@ -26,6 +26,7 @@ private:
 	ExpressionNode * Or();
 	ExpressionNode * And();
 	ExpressionNode * Relational();
+	ExpressionNode * ShiftRight();
 	ExpressionNode * PlusMinus();
 	ExpressionNode * TimesDivide();
 	ExpressionNode * Factor();

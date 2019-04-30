@@ -24,6 +24,7 @@ class IfStatementNode;
 class WhileStatementNode;
 class AndNode;
 class OrNode;
+class ShiftRightNode;
 class ExpressionNode;
 class IntegerNode;
 class IdentifierNode;
@@ -209,6 +210,14 @@ public:
 class AndNode : public BinaryOperatorNode {
 public:
 	AndNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
+	};
+	int Evaluate();
+	virtual void CodeEvaluate(InstructionsClass & code);
+};
+
+class ShiftRightNode : public BinaryOperatorNode {
+public:
+	ShiftRightNode(ExpressionNode* left, ExpressionNode* right) : BinaryOperatorNode(left, right) {
 	};
 	int Evaluate();
 	virtual void CodeEvaluate(InstructionsClass & code);
